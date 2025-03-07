@@ -1,0 +1,59 @@
+{% extends 'main.html' %}
+{% block content %}
+<main style="background-color: bisque;">
+    <section class="form-section">
+        <div class="form-container">
+            <h2>Sign Up</h2>
+            <p>Create an account to enjoy personalized movie recommendations.</p>
+            
+            <!-- Display Django Messages -->
+            <!-- {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %} -->
+
+            <form method="post" action="{% url 'signup' %}">
+                {% csrf_token %}
+                
+                <!-- Loop through each form field to display errors -->
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        
+                        <!-- Display validation errors next to the field -->
+                        {% if field.errors %}
+                            <div class="error-message">
+                                {% for error in field.errors %}
+                                    <p class="error-text">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+            
+            <p>Already have an account? <a href="{% url 'login' %}">Log in here</a>.</p>
+        </div>
+    </section>
+</main>
+
+<style>
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    .error-text {
+        margin: 2px 0;
+    }
+</style>
+{% endblock %}

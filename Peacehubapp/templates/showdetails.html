@@ -1,0 +1,52 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<main>
+    <section class="show-header" style="display: flex; align-items: center; padding: 20px;">
+        <div class="poster" style="flex: 0 0 200px;">
+            <img src="{{ poster }}" alt="{{ title }}">
+        </div>
+        <div class="show-details" style="padding-left: 20px;">
+            <h1 style="margin: 0;">{{ title }}</h1>
+            <div class="rating" style="margin: 10px 0;">
+                <span style="font-size: 20px;">⭐</span> {{ rating }}/10
+            </div>
+            <p style="max-width: 600px;">{{ description }}</p>
+        </div>
+    </section>
+
+    <section class="comments" style="padding: 20px;">
+        <h2>Comments</h2>
+        <div class="comment-form" style="margin-bottom: 20px;">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <textarea name="comment" rows="4" cols="50" placeholder="Write your comment here..." required></textarea>
+                <br>
+                <button type="submit" class="btn">Submit Comment</button>
+            </form>
+        </div>
+        <div class="comment-list">
+            {% for comment in comments %}
+            <div class="comment" style="border: 1px solid #ddd; padding: 10px; border-radius: 4px; margin-bottom: 10px;">
+                <p><strong>{{ comment.user.username }}:</strong> {{ comment.content }}</p>
+                <p style="font-size: 0.9rem; color: #888;">{{ comment.created_at|date:"F j, Y, g:i a" }}</p>
+                
+                <!-- Show delete button only if the logged-in user is the owner -->
+                {% if comment.user == request.user %}
+                <form action="{% url 'delete_comment' comment.id %}" method="GET" style="display: inline;">
+                    <button type="submit" class="btn btn-danger" style="background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                        Delete
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+            {% empty %}
+            <p>No comments yet. Be the first to comment!</p>
+            {% endfor %}
+        </div>
+        
+    </section>
+</main>
+
+{% endblock content %}

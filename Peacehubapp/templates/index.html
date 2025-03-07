@@ -1,0 +1,181 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block content %}
+<main>
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Welcome to PeaceHub</h2> 
+            <p>Discover the latest and greatest films.</p>
+            <!-- <a href="#" class="btn">See More</a> -->
+        </div>
+    </section>
+    {% if request.user.is_authenticated %}
+    <section class="previous-searches">
+        <div class="container">
+            <h2 style="color: #F5E4BE; padding: 0 0 20px;">Your Previous Searches</h2>
+            <div class="previous-search-grid">
+                {% if previous_searches %}
+                    {% for search in previous_searches %}
+                    <div class="previous-search-item">
+                        <h3 style="color: bisque;">{{ search.term }}</h3>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="color: #F5E4BE;">You haven't searched for any movies yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    <!-- Centered Search Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <form method="POST" action="">
+                {% csrf_token %}
+                <input type="text" id="movie-name" name="movie_name" placeholder="Type name of a movie....">
+                <div id="autocomplete-dropdown" class="autocomplete-list"></div>
+                <button type="submit" class="search-btn">Recommend</button>
+            </form>
+        </div>
+    </section>
+    <section class="movies">
+        <div class="container">
+            <h2 style ="color: #F5E4BE; padding: 0 0 20px">Recommended Movies</h2>
+            <div class="movie-grid">
+                {% if recommended_movies %}
+                    {% for movie, poster in recommended_movies|zip_lists:recommended_posters %}
+                        <div class="movie-item">
+                            <a href = "{% url 'showdetails' movie %}">
+                                <img src="{{ poster }}" alt="Movie Poster">
+                                <h3>{{ movie }}</h3>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="color:#F5E4BE">No recommendations yet. Search for a movie to get started!</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</main>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const recommendButton = document.querySelector('.search-btn');
+        const movieInput = document.querySelector('#movie-name');
+        const movieGrid = document.querySelector('.movie-grid');
+        const recommendedMoviesSection = document.querySelector('.movies'); 
+        const previousSearchesContainer = document.querySelector('.previous-search-grid'); // Selects the previous searches section
+
+        recommendButton.addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent default form submission behavior
+
+            const movieName = movieInput.value.trim();
+            if (!movieName) {
+                alert("Please enter a movie name!");
+                return;
+            }
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            fetch('/recommend_movies', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({ movie: movieName })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.movies) {
+                        movieGrid.innerHTML = ''; // Clear existing movies
+
+                        // Populate new recommendations
+                        data.movies.forEach(movie => {
+                            const movieItem = document.createElement('div');
+                            movieItem.className = 'movie-item';
+
+                            movieItem.innerHTML = `
+                                <a href="/showdetails/${movie.title}">
+                                    <img src="${movie.poster}" alt="${movie.title}">
+                                    <h3>${movie.title}</h3>
+                                </a>
+                            `;
+                            movieGrid.appendChild(movieItem);
+                        });
+
+                        movieGrid.style.display = 'grid'; // Show grid
+
+                        // **Smoothly scroll to the recommended movies section**
+                        recommendedMoviesSection.scrollIntoView({ behavior: 'smooth' });
+
+                        // **Update Previous Searches Dynamically**
+                        if (previousSearchesContainer) {
+                            const newSearchItem = document.createElement('div');
+                            newSearchItem.className = 'previous-search-item';
+                            newSearchItem.innerHTML = `<h3 style="color: bisque;">${movieName}</h3>`;
+
+                            // Add new search at the beginning
+                            previousSearchesContainer.prepend(newSearchItem);
+
+                            // Keep only the last 4 searches
+                            while (previousSearchesContainer.children.length > 4) {
+                                previousSearchesContainer.removeChild(previousSearchesContainer.lastChild);
+                            }
+                        }
+                    } else {
+                        alert(data.error || "No recommendations found.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching recommendations:", error);
+                    alert("An error occurred while fetching recommendations.");
+                });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const movieInput = document.querySelector('#movie-name');
+        const autocompleteDropdown = document.querySelector('#autocomplete-dropdown');
+
+        // Fetch movie suggestions
+        movieInput.addEventListener('input', function () {
+            const query = movieInput.value.trim();
+
+            if (query.length > 0) {
+                fetch(`/autocomplete_movies/?query=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        autocompleteDropdown.innerHTML = ''; // Clear previous results
+
+                        if (data.movies.length > 0) {
+                            data.movies.forEach(movie => {
+                                const option = document.createElement('div');
+                                option.classList.add('autocomplete-item');
+                                option.textContent = movie;
+                                option.onclick = function () {
+                                    movieInput.value = movie;  // Set input value
+                                    autocompleteDropdown.innerHTML = ''; // Hide dropdown
+                                };
+                                autocompleteDropdown.appendChild(option);
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error fetching autocomplete results:', error));
+            } else {
+                autocompleteDropdown.innerHTML = ''; // Hide dropdown if input is empty
+            }
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!movieInput.contains(e.target) && !autocompleteDropdown.contains(e.target)) {
+                autocompleteDropdown.innerHTML = '';
+            }
+        });
+    });
+</script>
+
+
+
+{% endblock content %}

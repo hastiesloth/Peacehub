@@ -1,0 +1,84 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<main style="background-color: bisque;">
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <input type="text" id="movie-search" placeholder="Type to search movies...">
+            <button class="search-btn" id="search-button">Search</button>
+        </div>
+    </section>
+
+    <!-- Movies Section -->
+    <section class="movies">
+        <div class="container">
+            <h2>Movies</h2>
+            <div class="movie-grid" id="movie-grid">
+                {% for movie, poster in all_movies|zip_lists:all_posters %}
+                <div class="movie-item">
+                    <a style="color: #333333; text-decoration: none;" href="{% url 'showdetails' movie %}">
+                        <img src="{{ poster }}" alt="{{ movie }}">
+                        <h3>{{ movie }}</h3>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('movie-search');
+        const searchButton = document.getElementById('search-button');
+        const movieGrid = document.getElementById('movie-grid');
+
+        // Function to fetch and display movies
+        const fetchMovies = (query) => {
+            fetch(`/search_movies/?query=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.movies) {
+                        movieGrid.innerHTML = ''; // Clear existing grid
+                        data.movies.forEach(movie => {
+                            const movieItem = document.createElement('div');
+                            movieItem.className = 'movie-item';
+                            movieItem.innerHTML = `
+                                <a href="/showdetails/${movie.title}" style="color: #333333; text-decoration: none;">
+                                    <img src="${movie.poster}" alt="${movie.title}">
+                                    <h3>${movie.title}</h3>
+                                </a>
+                            `;
+                            movieGrid.appendChild(movieItem);
+                        });
+                    } else {
+                        movieGrid.innerHTML = '<p>No movies found.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching movies:', error);
+                });
+        };
+
+        // Trigger search on input
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                fetchMovies(query);
+            }
+        });
+
+        // Trigger search on button click
+        searchButton.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            if (query) {
+                fetchMovies(query);
+            }
+        });
+    });
+</script>
+
+{% endblock content %}

@@ -1,0 +1,600 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+main {
+    flex: 1;
+    padding: 2rem 0;
+}
+
+
+/* Header Styling */
+header {
+    background: rgba(51, 51, 51, 0.8); /* Slightly transparent background */
+    color: #fff;
+    padding: 1rem 0;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.logo img {
+    height: 150px;
+    width: auto;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 1rem;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.5s;
+}
+
+nav ul li a:hover {
+    color: #F5E4BE;
+}
+
+/* Hero Section Styling */
+.hero {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2rem;
+    text-align: center;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.hero p {
+    margin-bottom: 1.5rem;
+    color: #fff;
+}
+
+.btn {
+    display: inline-block;
+    background: #333;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.5s, color 0.5s;
+}
+
+.btn:hover {
+    background: #F5E4BE;
+    color: #333;
+}
+
+/* Centered Search Section */
+.search-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
+
+.search-container {
+    text-align: center;
+}
+
+.search-container input[type="text"] {
+    padding: 1rem;
+    font-size: 1.2rem;
+    width: 400px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.search-btn {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: background 0.5s;
+}
+
+.search-btn:hover {
+    background: #F5E4BE;
+    color: #333;
+}
+
+/* Movies Section Styling */
+.movies {
+    padding: 2rem 0;
+}
+
+.movies .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.movie-grid {
+    display: flex !important; /* Display items in a row */
+    flex-wrap: wrap; /* Wrap to the next line if necessary */
+    gap: 20px; /* Add space between items */
+    justify-content: center; /* Center items in the grid */
+    margin-top: 20px;
+    border: 2px;
+    height: auto !important;
+    width: auto !important;
+
+}
+
+.movie-item {
+    background: #fff;
+    border: 1px;
+    border-radius: 8px;
+    /* overflow: hidden; */
+    text-align: center;
+    width: 250px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.movie-item img {
+    width: 100%; /* Ensure the image takes up the full width */
+    height: auto; /* Maintain aspect ratio */
+    border-bottom: 1px solid #ddd;
+}
+
+.movie-item h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: #333;
+}
+
+
+/* Footer Styling */
+footer {
+    background: rgba(51, 51, 51, 0.8);
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+
+/* Contact Section Styling */
+.contacts-section {
+    padding: 2rem 0;
+    background: #f9f9f9;
+}
+
+.contacts-section h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    color: #333;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.contact-card {
+    background: #fff;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.contact-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.contact-card p {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.contact-card a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contact-card a:hover {
+    text-decoration: underline;
+}
+
+/* Top Movies */
+#load-more {
+    margin: 20px auto;
+    display: block;
+    background: #333;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-align: center;
+    border: none;
+    transition: background 0.5s, color 0.5s;
+}
+
+#load-more:hover {
+    background: #F5E4BE;
+    color: #333;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+/*Login/logout*/
+
+/* Login/Signup Form */
+.login-section, .signup-section {
+    padding: 2rem 0;
+    background: #f9f9f9;
+}
+
+.login-section h2, .signup-section h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.login-section form, .signup-section form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 1rem;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.login-section form div, .signup-section form div {
+    margin-bottom: 1rem;
+}
+
+.login-section form button, .signup-section form button {
+    width: 100%;
+    padding: 0.7rem;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.5s ease;
+}
+
+.login-section form button:hover, .signup-section form button:hover {
+    background: #F5E4BE;
+    color: #333;
+}
+
+/* Form Section Styling */
+.form-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.7); /* Match the dark theme of the site */
+    padding: 4rem 0; /* Ensure proper spacing from the header and footer */
+    color: #fff; /* White text for better readability */
+    min-height: calc(100vh - 120px);
+}
+
+.form-container {
+    background: rgba(149, 148, 148, 0.8);; /* Light background for contrast */
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    text-align: center;
+}
+
+.form-container h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #333; /* Dark text for headings */
+}
+
+.form-container p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: #555; /* Subtle gray text for descriptions */
+}
+
+.form-container .form-group {
+    margin-bottom: 1.5rem;
+    text-align: left; /* Align labels and inputs to the left */
+}
+
+.form-container label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    outline: none;
+    transition: border 0.3s;
+}
+
+.form-container input:focus {
+    border-color: #333; /* Darker border when focused */
+}
+
+.form-container button.btn {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    background: #333; /* Dark background matching the site theme */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.form-container button.btn:hover {
+    background: #F5E4BE; /* Light hover effect */
+    color: #333;
+}
+
+.form-container a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.form-container a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+/* Fix password help text visibility */
+.form-container .form-group .helptext {
+    font-size: 0.9rem;
+    color: #333; /* Ensure readability */
+    margin-top: 10px;
+    line-height: 1.4;
+}
+
+/* Media Query for Smaller Screens */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 1.5rem;
+    }
+
+    .form-container h2 {
+        font-size: 1.8rem;
+    }
+
+    .form-container input {
+        font-size: 0.9rem;
+    }
+
+    .form-container button.btn {
+        font-size: 1rem;
+    }
+}
+
+/* Previous Searches Section Styling */
+.previous-searches {
+    margin-top: 2rem;
+    padding: 2rem 0;
+}
+
+.previous-searches .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.previous-search-grid {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.previous-search-item {
+    background: #575757;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: center;
+    width: calc(33.333% - 1rem);
+    box-sizing: border-box;
+    padding: 1rem;
+}
+
+.previous-search-item img {
+    width: 100%;
+    height: auto;
+}
+
+/* Dropdown Styling */
+/* Dropdown Styling */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+#logout-dropdown {
+    display: none; /* Initially hidden */
+    position: absolute;
+    background-color: #333; /* Match the theme */
+    border-radius: 5px;
+    padding: 10px;
+    top: 100%; /* Appears below the "Welcome! Username" */
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#logout-btn {
+    background: #333; /* Dark theme button */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+    width: 100%;
+    text-align: center;
+}
+
+#logout-btn:hover {
+    background: #F5E4BE; /* Light hover effect */
+    color: #333;
+}
+
+/* Show dropdown menu when clicked */
+.dropdown.active #logout-dropdown {
+    display: block;
+}
+
+
+/* Password Instruction Text Styling */
+.password-help {
+    font-size: 0.9rem;
+    color: #333; /* Change to black for better readability */
+    margin-top: 10px;
+    line-height: 1.4;
+}
+
+/* Comments Section */
+.comments {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+.comment-form .btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.comment-form .btn:hover {
+    background-color: #0056b3;
+}
+
+.comment-list .comment {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: #fff;
+}
+
+/* Confirmation Delete Button */
+.btn-danger {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: darkred;
+}
+
+
+/* Autocomplete Dropdown */
+.autocomplete-list {
+    position: absolute;
+    width: 400px; /* Same width as input */
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.autocomplete-item {
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.autocomplete-item:hover {
+    background: #f0f0f0;
+}

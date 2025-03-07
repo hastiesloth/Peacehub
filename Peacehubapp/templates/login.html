@@ -1,0 +1,24 @@
+{% extends 'main.html' %}
+{% block content %}
+<main style="background-color:  #F5E4BE">
+    <section class="form-section">
+        <div class="form-container">
+            <h2>Welcome Back!</h2>
+            <p>Log in to continue enjoying personalized movie recommendations.</p>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn">Log In</button>
+            </form>
+            <p>Don't have an account? <a href="{% url 'signup' %}">Sign up here</a>.</p>
+        </div>
+    </section>
+</main>
+{% endblock %}

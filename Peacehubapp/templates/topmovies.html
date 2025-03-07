@@ -1,0 +1,69 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<main style="background-color: bisque;">
+    <section class="movies">
+        <div class="container">
+            <h2>Top Rated Movies</h2>
+            <div class="movie-grid" id="movie-grid">
+                {% for movie in movies %}
+                <div class="movie-item">
+                    <a style="color: #333333; text-decoration: none;" href="{% url 'showdetails' movie.title %}">
+                        <img src="{{ movie.poster_path|default:'https://via.placeholder.com/500x750?text=No+Image' }}" alt="{{ movie.title }}">
+                        <h3>{{ movie.title }}</h3>
+                        <p>Rating: {{ movie.vote_average|default:"N/A" }}</p>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="button-container">
+                <button id="load-more" class="btn">More Movies...</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const loadMoreButton = document.getElementById('load-more');
+        const movieGrid = document.getElementById('movie-grid');
+        let currentPage = 1;
+
+        // Function to fetch and display more movies
+        const fetchMoreMovies = () => {
+            currentPage++;
+            fetch(`/fetch_top_movies/?page=${currentPage}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.movies) {
+                        data.movies.forEach(movie => {
+                            const movieItem = document.createElement('div');
+                            movieItem.className = 'movie-item';
+                            movieItem.innerHTML = `
+                                <a href="/showdetails/${movie.title}">
+                                    <img src="${movie.poster_path || 'https://via.placeholder.com/500x750?text=No+Image'}" alt="${movie.title}">
+                                    <h3>${movie.title}</h3>
+                                    <p>Rating: ${movie.vote_average || "N/A"}</p>
+                                </a>
+                            `;
+                            movieGrid.appendChild(movieItem);
+                        });
+                    }
+
+                    // Disable the button if no more movies are available
+                    if (!data.has_more) {
+                        loadMoreButton.disabled = true;
+                        loadMoreButton.innerText = "No More Movies";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching more movies:', error);
+                });
+        };
+
+        // Attach click event to the load more button
+        loadMoreButton.addEventListener('click', fetchMoreMovies);
+    });
+</script>
+{% endblock content %}
